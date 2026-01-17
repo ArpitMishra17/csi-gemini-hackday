@@ -125,6 +125,19 @@ export function OnboardingWizard() {
     })
   }
 
+  const getRedirectUrl = (preferences: string[]): string => {
+    if (preferences.includes("By trying things out")) {
+      return "/demo"
+    }
+    if (preferences.includes("By talking and asking questions")) {
+      return "/chat"
+    }
+    if (preferences.includes("By reading and watching")) {
+      return "/explore"
+    }
+    return "/"
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 py-8">
       <Card className="w-full max-w-2xl shadow-lg border-2 border-primary/10 bg-card/50 backdrop-blur-sm relative overflow-visible">
@@ -339,7 +352,9 @@ export function OnboardingWizard() {
                   if (res.ok) {
                     // Track onboarding completion
                     trackOnboardingComplete()
-                    router.push("/")
+                    // Redirect based on exploration preference
+                    const redirectUrl = getRedirectUrl(formData.explorationPreference)
+                    router.push(redirectUrl)
                   } else {
                     console.error("Failed to save onboarding data")
                     // Optionally handle error here

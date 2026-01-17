@@ -44,6 +44,16 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                 h3: ({ children }) => <h3 className="text-sm font-bold mb-2">{children}</h3>,
                 strong: ({ children }) => <strong className="font-bold">{children}</strong>,
                 code: ({ children }) => <code className="bg-background/20 rounded px-1 py-0.5 font-mono text-xs">{children}</code>,
+                a: ({ children, href }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-emerald-600 dark:text-emerald-400 font-medium underline underline-offset-4 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                  >
+                    {children}
+                  </a>
+                ),
               }}
             >
               {message.content}
