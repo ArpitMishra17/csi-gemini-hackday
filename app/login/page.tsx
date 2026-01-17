@@ -47,7 +47,7 @@ export default function LoginPage() {
             // Track login activity
             trackLogin();
 
-            router.push("/onboarding");
+            router.push("/");
             router.refresh();
         } catch (err: any) {
             setError(err.message);

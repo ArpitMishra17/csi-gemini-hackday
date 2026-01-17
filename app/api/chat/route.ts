@@ -18,10 +18,11 @@ interface UserProfile {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, history = [], userProfile = {} } = body as {
+    const { message, history = [], userProfile = {}, careerContext } = body as {
       message: string;
       history: ChatMessage[];
       userProfile: UserProfile;
+      careerContext?: string;
     };
 
     if (!message || typeof message !== 'string') {
@@ -31,8 +32,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Build system prompt with user profile
-    const systemPrompt = CHATBOT_SYSTEM_PROMPT(userProfile);
+    // Build system prompt with user profile and career context
+    let systemPrompt = CHATBOT_SYSTEM_PROMPT(userProfile);
+
+    // Add career-specific context if provided
+    if (careerContext) {
+      systemPrompt += `\n\nIMPORTANT CONTEXT: The user is specifically interested in learning about the "${careerContext}" career. Focus your responses on this career path, including information about:
+- What professionals in this field do day-to-day
+- Required skills and qualities
+- Education pathways in India and abroad
+- Salary expectations
+- Career growth opportunities
+- Challenges and rewards of the profession
+Be detailed and helpful while keeping responses conversational and encouraging.`;
+    }
 
     // Convert history to Gemini format
     const geminiHistory = history.map((msg) => ({
@@ -59,9 +72,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in chat:', error);
     return NextResponse.json(
-      { 
-        error: 'Failed to generate response', 
-        details: error instanceof Error ? error.message : String(error) 
+      {
+        error: 'Failed to generate response',
+        details: error instanceof Error ? error.message : String(error)
       },
       { status: 500 }
     );

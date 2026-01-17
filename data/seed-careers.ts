@@ -31,4 +31,12 @@ export const careersSeedData = [
     skills: ['Writing', 'Investigation', 'Critical Thinking', 'Interviewing', 'Ethics', 'Deadline Management'],
     suitableFor: ['both'],
   },
+  {
+    name: 'Teacher',
+    slug: 'teacher',
+    description: 'Education professionals who inspire, guide, and shape the minds of students at schools and universities. They create engaging learning experiences, assess student progress, and contribute to the development of future generations.',
+    icon: '👩‍🏫',
+    skills: ['Communication', 'Patience', 'Subject Expertise', 'Classroom Management', 'Empathy', 'Creativity'],
+    suitableFor: ['both'],
+  },
 ];
