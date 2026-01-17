@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export function getGeminiModel(): GenerativeModel {
-  return genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-1.5-flash' });
+  return genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-2.5-flash' });
 }
 
 export async function generateText(prompt: string, systemPrompt?: string): Promise<string> {
@@ -25,7 +25,7 @@ export async function generateChatResponse(
   // Get model with system instruction built-in
   const model = systemPrompt
     ? genAI.getGenerativeModel({
-        model: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+        model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
         systemInstruction: systemPrompt,
       })
     : getGeminiModel();
@@ -40,6 +40,46 @@ export async function generateChatResponse(
   const lastMessage = messages[messages.length - 1];
   const result = await chat.sendMessage(lastMessage.content);
   return result.response.text();
+}
+
+export async function generateChatResponseStream(
+  messages: { role: 'user' | 'model'; content: string }[],
+  systemPrompt?: string
+): Promise<ReadableStream<Uint8Array>> {
+  const model = systemPrompt
+    ? genAI.getGenerativeModel({
+        model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+        systemInstruction: systemPrompt,
+      })
+    : getGeminiModel();
+
+  const chat = model.startChat({
+    history: messages.slice(0, -1).map((msg) => ({
+      role: msg.role,
+      parts: [{ text: msg.content }],
+    })),
+  });
+
+  const lastMessage = messages[messages.length - 1];
+  const result = await chat.sendMessageStream(lastMessage.content);
+
+  // Create a ReadableStream from the generator
+  return new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder();
+      try {
+        for await (const chunk of result.stream) {
+          const chunkText = chunk.text();
+          if (chunkText) {
+            controller.enqueue(encoder.encode(chunkText));
+          }
+        }
+        controller.close();
+      } catch (error) {
+        controller.error(error);
+      }
+    },
+  });
 }
 
 export async function generateScenarioNarration(

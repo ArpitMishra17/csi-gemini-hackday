@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, use } from 'react';
+import { useEffect, useState, useCallback, use, useRef } from 'react';
 import Link from 'next/link';
 import { ChatInterface, EvaluationResult } from '@/components/demo';
 import { Button } from '@/components/ui/button';
@@ -40,6 +40,9 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
   const [evaluation, setEvaluation] = useState<EvaluationData | null>(null);
   const [choicesSummary, setChoicesSummary] = useState<{ situation: string; choice: string }[]>([]);
 
+  // Prevent double-firing in Strict Mode
+  const hasStarted = useRef(false);
+
   // Generate a simple user ID for demo purposes
   const getUserId = useCallback(() => {
     if (typeof window === 'undefined') return 'demo-user';
@@ -54,6 +57,9 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
   // Start the scenario
   useEffect(() => {
     async function startScenario() {
+      if (hasStarted.current) return;
+      hasStarted.current = true;
+
       try {
         setIsLoading(true);
         const userId = getUserId();

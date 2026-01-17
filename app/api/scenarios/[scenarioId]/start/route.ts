@@ -6,6 +6,10 @@ import Career from '@/models/Career';
 import { generateScenarioNarration } from '@/lib/gemini';
 import { CAREER_SYSTEM_PROMPTS } from '@/lib/prompts';
 
+// Simple in-memory cache for initial scenario narrations
+// Key: scenarioId, Value: generated narration
+const narrationCache = new Map<string, string>();
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ scenarioId: string }> }
@@ -77,17 +81,25 @@ export async function POST(
 
     // Generate AI narration for the first stage
     let narration: string;
-    try {
-      const systemPrompt = CAREER_SYSTEM_PROMPTS[career.slug] || '';
-      narration = await generateScenarioNarration(
-        scenario.context + '\n\n' + systemPrompt,
-        firstStage.prompt,
-        []
-      );
-    } catch (error) {
-      console.error('Error generating narration:', error);
-      // Fallback to basic context if AI fails
-      narration = `${scenario.context}\n\n${firstStage.prompt}`;
+    
+    // Check cache first
+    if (narrationCache.has(scenarioId)) {
+      narration = narrationCache.get(scenarioId)!;
+    } else {
+      try {
+        const systemPrompt = CAREER_SYSTEM_PROMPTS[career.slug] || '';
+        narration = await generateScenarioNarration(
+          scenario.context + '\n\n' + systemPrompt,
+          firstStage.prompt,
+          []
+        );
+        // Cache the successful generation
+        narrationCache.set(scenarioId, narration);
+      } catch (error) {
+        console.error('Error generating narration:', error);
+        // Fallback to basic context if AI fails
+        narration = `${scenario.context}\n\n${firstStage.prompt}`;
+      }
     }
 
     return NextResponse.json({
