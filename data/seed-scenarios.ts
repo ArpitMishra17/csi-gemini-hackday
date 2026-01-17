@@ -1352,4 +1352,395 @@ export const scenariosSeedData = {
       ],
     },
   ],
+
+  teacher: [
+    {
+      title: 'First Day in the Classroom',
+      description: 'Navigate your first day as a new teacher, establishing rapport with students and setting the tone for the year.',
+      difficulty: 'beginner',
+      context: 'You are a new school teacher starting your first day at a high school. You need to introduce yourself to your class and establish your teaching presence.',
+      stages: [
+        {
+          stageId: 'stage_1',
+          prompt: 'You enter your first classroom of 30 students. Some are chatting loudly, others are on their phones, and a few are looking at you expectantly.',
+          aiSystemContext: 'First moments in the classroom. First impressions matter.',
+          options: [
+            {
+              id: 'opt_1a',
+              text: 'Wait patiently at the front until students notice you and quiet down',
+              skillsRevealed: ['Patience', 'Presence'],
+              nextStageId: 'stage_2',
+            },
+            {
+              id: 'opt_1b',
+              text: 'Introduce yourself loudly and enthusiastically to grab attention',
+              skillsRevealed: ['Energy', 'Confidence'],
+              nextStageId: 'stage_2',
+            },
+            {
+              id: 'opt_1c',
+              text: 'Start writing something intriguing on the board to spark curiosity',
+              skillsRevealed: ['Creativity', 'Engagement'],
+              nextStageId: 'stage_2',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2',
+          prompt: 'Students are now paying attention. A student asks, "Are you going to be strict like our last teacher?"',
+          aiSystemContext: 'Students are testing boundaries and forming opinions.',
+          options: [
+            {
+              id: 'opt_2a',
+              text: 'Explain that you believe in mutual respect and clear expectations',
+              skillsRevealed: ['Balance', 'Communication'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2b',
+              text: 'Ask what they liked and disliked about their previous teacher',
+              skillsRevealed: ['Active Listening', 'Student-Centered Approach'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2c',
+              text: 'Share your teaching philosophy focusing on making learning enjoyable',
+              skillsRevealed: ['Vision', 'Authenticity'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_3',
+          prompt: 'During your first activity, you notice a student sitting alone at the back, not participating and looking disengaged.',
+          aiSystemContext: 'Noticing individual student needs in a group setting.',
+          options: [
+            {
+              id: 'opt_3a',
+              text: 'Continue with the class but make a note to check on them individually later',
+              skillsRevealed: ['Observation', 'Planning'],
+              nextStageId: 'stage_4',
+            },
+            {
+              id: 'opt_3b',
+              text: 'Walk over casually and gently encourage them to join in',
+              skillsRevealed: ['Empathy', 'Individual Attention'],
+              nextStageId: 'stage_4',
+            },
+            {
+              id: 'opt_3c',
+              text: 'Assign them a small role that helps them feel included without pressure',
+              skillsRevealed: ['Inclusion', 'Sensitivity'],
+              nextStageId: 'stage_4',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_4',
+          prompt: 'The bell rings. Students seem engaged and a few even say goodbye as they leave. One student stays back to ask a question about the subject.',
+          aiSystemContext: 'Positive first day ending. Building individual connections.',
+          options: [
+            {
+              id: 'opt_4a',
+              text: 'Take time to answer their question thoroughly and encourage their curiosity',
+              skillsRevealed: ['Dedication', 'Encouragement', 'Subject Passion'],
+              nextStageId: null,
+            },
+            {
+              id: 'opt_4b',
+              text: 'Answer briefly and invite them to office hours for a deeper discussion',
+              skillsRevealed: ['Time Management', 'Accessibility'],
+              nextStageId: null,
+            },
+            {
+              id: 'opt_4c',
+              text: 'Recommend a resource they can explore and offer to discuss it next class',
+              skillsRevealed: ['Self-Directed Learning', 'Resourcefulness'],
+              nextStageId: null,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Managing a Difficult Classroom Situation',
+      description: 'Handle a challenging classroom conflict while maintaining authority and supporting all students.',
+      difficulty: 'intermediate',
+      context: 'You are a school teacher dealing with a classroom disruption that threatens to derail your lesson and affect multiple students.',
+      stages: [
+        {
+          stageId: 'stage_1',
+          prompt: 'Two students start arguing loudly during your lesson. One accuses the other of cheating on a group project. The class is watching.',
+          aiSystemContext: 'Sudden conflict requiring immediate de-escalation.',
+          options: [
+            {
+              id: 'opt_1a',
+              text: 'Calmly ask both students to step outside with you to discuss privately',
+              skillsRevealed: ['De-escalation', 'Privacy Respect'],
+              nextStageId: 'stage_2a',
+            },
+            {
+              id: 'opt_1b',
+              text: 'Ask the class to work on an activity while you address the situation at their desks',
+              skillsRevealed: ['Classroom Management', 'Multitasking'],
+              nextStageId: 'stage_2b',
+            },
+            {
+              id: 'opt_1c',
+              text: 'Acknowledge the issue and say you will address it after class, continuing the lesson',
+              skillsRevealed: ['Authority', 'Focus'],
+              nextStageId: 'stage_2c',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2a',
+          prompt: 'Outside the classroom, one student is visibly upset and claims they did all the work. The other insists they contributed but their work was ignored.',
+          aiSystemContext: 'Hearing both sides of a group work conflict.',
+          options: [
+            {
+              id: 'opt_2a1',
+              text: 'Listen to both perspectives fully before responding',
+              skillsRevealed: ['Active Listening', 'Fairness'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2a2',
+              text: 'Ask to see evidence of each student\'s contribution to the project',
+              skillsRevealed: ['Evidence-Based Thinking', 'Thoroughness'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2b',
+          prompt: 'At their desks, the tension is still high. Other students are pretending to work but clearly listening.',
+          aiSystemContext: 'Dealing with conflict in a semi-public setting.',
+          options: [
+            {
+              id: 'opt_2b1',
+              text: 'Quietly ask both to meet you during break to resolve this properly',
+              skillsRevealed: ['Discretion', 'Delayed Resolution'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2b2',
+              text: 'Use this as a teaching moment about conflict resolution for the whole class',
+              skillsRevealed: ['Opportunistic Teaching', 'Life Skills Education'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2c',
+          prompt: 'The students reluctantly quiet down, but the tension is palpable. You continue teaching but can sense the unresolved conflict.',
+          aiSystemContext: 'Lesson continues but underlying issue remains.',
+          options: [
+            {
+              id: 'opt_2c1',
+              text: 'Keep teaching but plan to address it seriously after class',
+              skillsRevealed: ['Prioritization', 'Follow-Through'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2c2',
+              text: 'Pause to briefly acknowledge that emotions are high and will be addressed soon',
+              skillsRevealed: ['Emotional Intelligence', 'Transparency'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_3',
+          prompt: 'After investigating, you find the truth is mixed: one student did more work, but the other was excluded from planning meetings.',
+          aiSystemContext: 'Complex situation with fault on both sides.',
+          options: [
+            {
+              id: 'opt_3a',
+              text: 'Explain that both contributed to the problem and discuss how to prevent this in future group work',
+              skillsRevealed: ['Balanced Judgment', 'Learning Orientation'],
+              nextStageId: 'stage_4',
+            },
+            {
+              id: 'opt_3b',
+              text: 'Adjust the grades to reflect individual contributions and counsel both students',
+              skillsRevealed: ['Fairness', 'Assessment Flexibility'],
+              nextStageId: 'stage_4',
+            },
+            {
+              id: 'opt_3c',
+              text: 'Have them work together one more time with clear guidelines to rebuild teamwork',
+              skillsRevealed: ['Restorative Approach', 'Second Chances'],
+              nextStageId: 'stage_4',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_4',
+          prompt: 'A week later, you notice the two students are civil to each other. One of them thanks you for handling the situation fairly.',
+          aiSystemContext: 'Resolution and positive outcome from conflict management.',
+          options: [
+            {
+              id: 'opt_4a',
+              text: 'Thank them for reflecting and learning from the experience',
+              skillsRevealed: ['Positive Reinforcement', 'Growth Mindset'],
+              nextStageId: null,
+            },
+            {
+              id: 'opt_4b',
+              text: 'Use this experience to update your group project guidelines for the class',
+              skillsRevealed: ['Continuous Improvement', 'Proactive Planning'],
+              nextStageId: null,
+            },
+            {
+              id: 'opt_4c',
+              text: 'Share the learning with colleagues to help them handle similar situations',
+              skillsRevealed: ['Collaboration', 'Knowledge Sharing'],
+              nextStageId: null,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'University Research and Teaching Balance',
+      description: 'Navigate the complex demands of being a university professor balancing teaching, research, and mentoring.',
+      difficulty: 'advanced',
+      context: 'You are a university professor managing your research lab, teaching courses, and advising graduate students while facing a publication deadline.',
+      stages: [
+        {
+          stageId: 'stage_1',
+          prompt: 'You have a major research paper deadline in two weeks, but your teaching evaluations show students are struggling with your course material. A PhD student also wants to discuss changing their thesis topic.',
+          aiSystemContext: 'Multiple competing priorities requiring immediate attention.',
+          options: [
+            {
+              id: 'opt_1a',
+              text: 'Prioritize the research deadline as it impacts your career and funding',
+              skillsRevealed: ['Career Focus', 'Prioritization'],
+              nextStageId: 'stage_2a',
+            },
+            {
+              id: 'opt_1b',
+              text: 'Schedule extra office hours to help struggling students first',
+              skillsRevealed: ['Student Commitment', 'Teaching Dedication'],
+              nextStageId: 'stage_2b',
+            },
+            {
+              id: 'opt_1c',
+              text: 'Meet with the PhD student as thesis decisions are time-sensitive',
+              skillsRevealed: ['Mentoring Priority', 'Long-term Thinking'],
+              nextStageId: 'stage_2c',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2a',
+          prompt: 'You focus on research, but receive an email from the department head asking about the student complaints regarding your course.',
+          aiSystemContext: 'Teaching issues escalating while research focus continues.',
+          options: [
+            {
+              id: 'opt_2a1',
+              text: 'Respond explaining your plan to address it after the deadline',
+              skillsRevealed: ['Communication', 'Time Management'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2a2',
+              text: 'Immediately adjust and create a remedial session this week',
+              skillsRevealed: ['Responsiveness', 'Flexibility'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2b',
+          prompt: 'During office hours, you discover the course material pace is too fast and students lack prerequisite knowledge. Your research collaborators message asking about the paper progress.',
+          aiSystemContext: 'Teaching reveals deeper issues while research presses on.',
+          options: [
+            {
+              id: 'opt_2b1',
+              text: 'Revise the next few lectures to include review material',
+              skillsRevealed: ['Adaptive Teaching', 'Student-Centered Approach'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2b2',
+              text: 'Create supplementary resources students can use outside class',
+              skillsRevealed: ['Resource Creation', 'Self-Directed Learning Support'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_2c',
+          prompt: 'Your PhD student is considering switching topics due to recent publications in their area making their work less novel. They seem stressed and uncertain.',
+          aiSystemContext: 'Mentoring situation requiring careful guidance.',
+          options: [
+            {
+              id: 'opt_2c1',
+              text: 'Discuss how to pivot their research angle to remain competitive',
+              skillsRevealed: ['Research Strategy', 'Creative Problem Solving'],
+              nextStageId: 'stage_3',
+            },
+            {
+              id: 'opt_2c2',
+              text: 'Help them evaluate whether switching topics is truly necessary',
+              skillsRevealed: ['Critical Analysis', 'Mentorship'],
+              nextStageId: 'stage_3',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_3',
+          prompt: 'The paper deadline is days away. Your co-author has sent incomplete analysis, your teaching assistant calls in sick before a major lecture, and your PhD student needs feedback on a draft.',
+          aiSystemContext: 'Maximum pressure with multiple failures converging.',
+          options: [
+            {
+              id: 'opt_3a',
+              text: 'Complete the co-author\'s analysis yourself to meet the deadline',
+              skillsRevealed: ['Self-Reliance', 'Deadline Commitment'],
+              nextStageId: 'stage_4',
+            },
+            {
+              id: 'opt_3b',
+              text: 'Request a short deadline extension and handle teaching first',
+              skillsRevealed: ['Realistic Assessment', 'Communication'],
+              nextStageId: 'stage_4',
+            },
+            {
+              id: 'opt_3c',
+              text: 'Delegate the lecture to a senior PhD student and focus on research',
+              skillsRevealed: ['Delegation', 'Team Development'],
+              nextStageId: 'stage_4',
+            },
+          ],
+        },
+        {
+          stageId: 'stage_4',
+          prompt: 'The semester ends. Your paper was submitted (with minor compromises), students showed improvement in final exams, and your PhD student decided to refine rather than switch topics.',
+          aiSystemContext: 'Resolution of a challenging period. Reflection time.',
+          options: [
+            {
+              id: 'opt_4a',
+              text: 'Reflect on what worked and adjust your workload management for next semester',
+              skillsRevealed: ['Self-Reflection', 'Continuous Improvement', 'Work-Life Balance'],
+              nextStageId: null,
+            },
+            {
+              id: 'opt_4b',
+              text: 'Write a detailed teaching plan to prevent similar student struggles next time',
+              skillsRevealed: ['Proactive Planning', 'Teaching Excellence'],
+              nextStageId: null,
+            },
+            {
+              id: 'opt_4c',
+              text: 'Acknowledge your team and students for navigating a tough period together',
+              skillsRevealed: ['Leadership', 'Team Building', 'Gratitude'],
+              nextStageId: null,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
