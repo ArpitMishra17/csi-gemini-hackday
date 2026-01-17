@@ -121,7 +121,7 @@ function ExamExploreCard({ exam }: { exam: ExploreExam }) {
                         </div>
                     </div>
 
-                    <p className="text-sm text-muted-foreground line-clamp-3 mb-4 h-[60px]">
+                    <p className="text-sm text-muted-foreground line-clamp-3 mb-4 h-15">
                         {exam.description}
                     </p>
 
@@ -154,7 +154,7 @@ export default function ExplorePage() {
         : EXPLORE_EXAMS.filter(e => e.category === activeCategory);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-secondary/20 to-background">
+        <div className="min-h-screen bg-linear-to-b from-secondary/20 to-background">
             {/* Header */}
             <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-10">
                 <div className="max-w-6xl mx-auto px-4 py-4">
