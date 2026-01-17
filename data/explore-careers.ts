@@ -51,6 +51,7 @@ export interface ExploreCareer {
     videos: VideoResource[];
     articles: ArticleResource[];
     color: string; // Tailwind color class for theming
+    demoId?: string; // MongoDB ID for the interactive demo (optional)
 }
 
 // Career categories for filtering
@@ -71,6 +72,7 @@ export const EXPLORE_CAREERS: ExploreCareer[] = [
     {
         id: 'doctor',
         slug: 'doctor',
+        demoId: '696b6017d98a80b7cd03b448',
         name: 'MBBS Doctor / Physician',
         category: 'medical',
         icon: 'Stethoscope',
@@ -190,6 +192,7 @@ export const EXPLORE_CAREERS: ExploreCareer[] = [
     {
         id: 'software-engineer',
         slug: 'software-engineer',
+        demoId: '696b6018d98a80b7cd03b449',
         name: 'Software Engineer / Engineering & Tech',
         category: 'tech',
         icon: 'Code',
@@ -761,6 +764,7 @@ export const EXPLORE_CAREERS: ExploreCareer[] = [
     {
         id: 'journalist',
         slug: 'journalist',
+        demoId: '696b6018d98a80b7cd03b44b',
         name: 'Journalist / Media Professional',
         category: 'media',
         icon: 'Newspaper',
@@ -909,6 +913,7 @@ export const EXPLORE_CAREERS: ExploreCareer[] = [
     {
         id: 'teacher-professor',
         slug: 'teacher-professor',
+        demoId: '696b6018d98a80b7cd03b44c',
         name: 'Teacher / Professor',
         category: 'education',
         icon: 'GraduationCap',

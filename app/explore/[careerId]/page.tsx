@@ -408,7 +408,7 @@ export default function CareerDetailPage({ params }: PageProps) {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <Button asChild size="lg">
-                                <Link href={`/demo/${career.slug}`} className="gap-2">
+                                <Link href={`/demo/${career.demoId || career.slug}`} className="gap-2">
                                     <PlayCircle className="w-5 h-5" />
                                     Try Career Demo
                                 </Link>
