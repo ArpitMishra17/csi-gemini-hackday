@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Check, ChevronLeft, ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { trackOnboardingComplete } from "@/lib/activity"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -336,6 +337,8 @@ export function OnboardingWizard() {
                   })
 
                   if (res.ok) {
+                    // Track onboarding completion
+                    trackOnboardingComplete()
                     router.push("/")
                   } else {
                     console.error("Failed to save onboarding data")

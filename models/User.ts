@@ -35,6 +35,22 @@ const UserSchema = new mongoose.Schema({
         situationPreference: String,
         explorationPreference: [String],
     },
+    avatar: {
+        type: String,
+        default: null, // URL or base64 of avatar image
+    },
+    lastActiveAt: {
+        type: Date,
+        default: Date.now,
+    },
+    currentStreak: {
+        type: Number,
+        default: 0,
+    },
+    longestStreak: {
+        type: Number,
+        default: 0,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

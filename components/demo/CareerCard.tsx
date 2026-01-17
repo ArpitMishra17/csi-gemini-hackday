@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight } from 'lucide-react';
+import { trackCareerExplore } from '@/lib/activity';
 
 interface CareerCardProps {
   career: {
@@ -17,8 +18,13 @@ interface CareerCardProps {
 }
 
 export default function CareerCard({ career, relevanceScore }: CareerCardProps) {
+  const handleClick = () => {
+    // Track career exploration
+    trackCareerExplore(career._id, career.name);
+  };
+
   return (
-    <Link href={`/demo/${career._id}`}>
+    <Link href={`/demo/${career._id}`} onClick={handleClick}>
       <Card className="hover:ring-primary/50 hover:ring-2 transition-all cursor-pointer group">
         <CardContent className="pt-6">
           <div className="flex items-start gap-4">

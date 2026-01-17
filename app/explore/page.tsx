@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { EXPLORE_CAREERS, CAREER_CATEGORIES, type ExploreCareer } from '@/data/explore-careers';
+import { trackCareerExplore } from '@/lib/activity';
 
 // Map icon names to Lucide components
 const iconMap: Record<string, React.ReactNode> = {
@@ -47,8 +48,13 @@ const colorMap: Record<string, { bg: string; text: string; border: string }> = {
 function CareerExploreCard({ career }: { career: ExploreCareer }) {
     const colors = colorMap[career.color] || colorMap.blue;
 
+    const handleClick = () => {
+        // Track career exploration
+        trackCareerExplore(career.id, career.name);
+    };
+
     return (
-        <Link href={`/explore/${career.slug}`}>
+        <Link href={`/explore/${career.slug}`} onClick={handleClick}>
             <Card className={`h-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 ${colors.border}`}>
                 <CardContent className="p-6">
                     <div className="flex items-start gap-4">
