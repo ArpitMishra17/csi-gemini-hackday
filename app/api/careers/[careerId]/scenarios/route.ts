@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import dbConnect from '@/lib/mongodb';
 import Scenario from '@/models/Scenario';
 import Career from '@/models/Career';
@@ -12,8 +13,14 @@ export async function GET(
 
     const { careerId } = await params;
 
-    // Verify career exists
-    const career = await Career.findById(careerId);
+    // Determine if searching by ID or Slug
+    let career;
+    if (mongoose.Types.ObjectId.isValid(careerId)) {
+      career = await Career.findById(careerId);
+    } else {
+      career = await Career.findOne({ slug: careerId });
+    }
+
     if (!career) {
       return NextResponse.json(
         { error: 'Career not found' },
@@ -21,7 +28,8 @@ export async function GET(
       );
     }
 
-    const scenarios = await Scenario.find({ careerId })
+    // Use the actual _id for the scenario query
+    const scenarios = await Scenario.find({ careerId: career._id })
       .select('_id title description difficulty')
       .sort({ difficulty: 1 });
 
