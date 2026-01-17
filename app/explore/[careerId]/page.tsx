@@ -101,7 +101,7 @@ export default function CareerDetailPage({ params }: PageProps) {
                             </div>
                         </div>
                         <Button asChild size="sm">
-                            <Link href="/chat" className="gap-2">
+                            <Link href={`/chat?career=${encodeURIComponent(career.name)}`} className="gap-2">
                                 <MessageCircle className="w-4 h-4" />
                                 Ask about this career
                             </Link>
@@ -414,7 +414,7 @@ export default function CareerDetailPage({ params }: PageProps) {
                                 </Link>
                             </Button>
                             <Button asChild variant="outline" size="lg">
-                                <Link href="/chat" className="gap-2">
+                                <Link href={`/chat?career=${encodeURIComponent(career.name)}`} className="gap-2">
                                     <MessageCircle className="w-5 h-5" />
                                     Ask AI Questions
                                 </Link>

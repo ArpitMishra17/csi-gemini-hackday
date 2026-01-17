@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ChatWindow } from '@/components/chat';
 import { Button } from "@/components/ui/button";
@@ -12,8 +13,12 @@ interface Message {
 }
 
 export default function ChatPage() {
+  const searchParams = useSearchParams();
+  const careerContext = searchParams.get('career');
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const hasInitialized = useRef(false);
 
   const handleSendMessage = async (content: string) => {
     // Add user message
@@ -33,6 +38,7 @@ export default function ChatPage() {
             grade: 'college',
             interests: ['technology', 'problem solving'],
           },
+          careerContext: careerContext || undefined,
         }),
       });
 
@@ -75,8 +81,17 @@ export default function ChatPage() {
     }
   };
 
+  // Auto-send initial message when career context is provided
+  useEffect(() => {
+    if (careerContext && !hasInitialized.current && messages.length === 0) {
+      hasInitialized.current = true;
+      handleSendMessage(`Tell me about the ${careerContext} career. What does a typical day look like, what skills are needed, and what's the education path?`);
+    }
+  }, [careerContext]);
+
   const handleClearChat = () => {
     setMessages([]);
+    hasInitialized.current = false;
   };
 
   return (
@@ -86,7 +101,7 @@ export default function ChatPage() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button asChild variant="ghost" size="icon" className="shrink-0">
-              <Link href="/demo" title="Back to Demo">
+              <Link href="/" title="Back to Home">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
             </Button>
