@@ -37,15 +37,32 @@ export default function ChatPage() {
       });
 
       if (!response.ok) throw new Error('Failed to get response');
+      if (!response.body) throw new Error('No response body');
 
-      const data = await response.json();
+      // Initialize assistant message
+      setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.message,
-      };
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantMessageContent = '';
 
-      setMessages((prev) => [...prev, assistantMessage]);
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        assistantMessageContent += chunk;
+
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          const lastMessage = newMessages[newMessages.length - 1];
+          if (lastMessage.role === 'assistant') {
+            lastMessage.content = assistantMessageContent;
+          }
+          return newMessages;
+        });
+      }
+
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessage: Message = {

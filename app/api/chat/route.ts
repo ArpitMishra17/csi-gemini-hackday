@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateChatResponse } from '@/lib/gemini';
+import { generateChatResponseStream } from '@/lib/gemini';
 import { CHATBOT_SYSTEM_PROMPT } from '@/lib/prompts';
 
 interface ChatMessage {
@@ -46,17 +46,23 @@ export async function POST(request: NextRequest) {
       content: message,
     });
 
-    // Generate response
-    const response = await generateChatResponse(geminiHistory, systemPrompt);
+    // Generate streaming response
+    const stream = await generateChatResponseStream(geminiHistory, systemPrompt);
 
-    return NextResponse.json({
-      message: response,
-      timestamp: new Date().toISOString(),
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
+      },
     });
+
   } catch (error) {
     console.error('Error in chat:', error);
     return NextResponse.json(
-      { error: 'Failed to generate response' },
+      { 
+        error: 'Failed to generate response', 
+        details: error instanceof Error ? error.message : String(error) 
+      },
       { status: 500 }
     );
   }
