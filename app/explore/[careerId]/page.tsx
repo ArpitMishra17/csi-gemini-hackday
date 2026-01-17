@@ -84,7 +84,7 @@ export default function CareerDetailPage({ params }: PageProps) {
     const colors = colorMap[career.color] || colorMap.blue;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-secondary/20 to-background">
+        <div className="min-h-screen bg-linear-to-b from-secondary/20 to-background">
             {/* Header */}
             <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-10">
                 <div className="max-w-5xl mx-auto px-4 py-4">
@@ -111,7 +111,7 @@ export default function CareerDetailPage({ params }: PageProps) {
             </header>
 
             {/* Hero Section */}
-            <div className={`bg-gradient-to-b ${colors.gradient}`}>
+            <div className={`bg-linear-to-b ${colors.gradient}`}>
                 <div className="max-w-5xl mx-auto px-4 py-12">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                         <div className={`w-20 h-20 rounded-2xl flex items-center justify-center ${colors.bg} ${colors.text}`}>
