@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
-import { ScenarioCard } from '@/components/demo';
+import { ScenarioCard, ProgressTracker } from '@/components/demo';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
@@ -19,6 +19,7 @@ interface Scenario {
   title: string;
   description: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
+  completed: boolean;
 }
 
 export default function CareerDetailPage({ params }: { params: Promise<{ careerId: string }> }) {
@@ -32,7 +33,13 @@ export default function CareerDetailPage({ params }: { params: Promise<{ careerI
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/careers/${careerId}/scenarios`);
+        // Get user ID from localStorage for progress tracking
+        const odUserId = localStorage.getItem('demo-user-id');
+        const url = odUserId
+          ? `/api/careers/${careerId}/scenarios?odUserId=${encodeURIComponent(odUserId)}`
+          : `/api/careers/${careerId}/scenarios`;
+
+        const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch data');
         const data = await response.json();
         setCareer(data.career);
@@ -108,6 +115,27 @@ export default function CareerDetailPage({ params }: { params: Promise<{ careerI
 
       {/* Scenarios */}
       <main className="max-w-3xl mx-auto px-4 py-8">
+        {/* Progress Tracker */}
+        {scenarios.length > 0 && (
+          <Card className="mb-6">
+            <CardContent className="pt-6 pb-4">
+              <h2 className="text-sm font-medium text-muted-foreground mb-4 text-center">
+                Your Progress
+              </h2>
+              <ProgressTracker
+                scenarios={scenarios.map(s => ({
+                  _id: s._id,
+                  title: s.title,
+                  completed: s.completed,
+                }))}
+              />
+              <p className="text-xs text-muted-foreground text-center mt-3">
+                {scenarios.filter(s => s.completed).length} of {scenarios.length} scenarios completed
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
         <h2 className="text-lg font-semibold mb-4">
           Available Scenarios
         </h2>
