@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ChatWindow } from '@/components/chat';
@@ -12,7 +12,7 @@ interface Message {
   content: string;
 }
 
-export default function ChatPage() {
+function ChatContent() {
   const searchParams = useSearchParams();
   const careerContext = searchParams.get('career');
 
@@ -139,5 +139,13 @@ export default function ChatPage() {
         />
       </main>
     </div>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
+      <ChatContent />
+    </Suspense>
   );
 }

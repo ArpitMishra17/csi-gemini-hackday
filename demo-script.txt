@@ -1,0 +1,76 @@
+# 🏆 Winning Hackathon Demo Script (5 Minutes)
+
+**Project Name**: CSI Gemini Career Assistant (or your custom name)
+**Theme**: AI-Powered Career Guidance & Experiential Learning
+**Time**: 5 Minutes Strict
+
+---
+
+## ⏱️ Minute 0:00 - 1:00: The Hook & The Problem
+**Speaker**: 
+"Finding the right career is broken. Students read static articles or watch random videos, but they never *experience* the job until it's too late. We are solving this with [Project Name] - an AI-powered experiential learning platform."
+
+**Action (Screen share)**:
+1.  **Start at Landing Page**: Show the clean, premium UI.
+2.  **Highlight**: "We don't just tell you about careers; we let you *live* them."
+
+## ⏱️ Minute 1:00 - 2:00: Exploration & Discovery
+**Speaker**:
+"Let's say I'm a student interested in medicine but unsure."
+
+**Action**:
+1.  **Click 'Explore Careers'**: Navigate to `/explore`.
+2.  **Scroll & Filter**: Briefly show the filters (Medical, Engineering).
+3.  **Click 'Doctor' Card**: Open the **Career Detail Page**.
+4.  **Showcase**:
+    *   Scroll past the "Day in the Life".
+    *   **Pause at 'Resources'**: "We aggregate the best videos, articles, and motivational quotes automatically."
+    *   **The Problem**: "But reading isn't enough. I want to know what it *feels* like."
+
+## ⏱️ Minute 2:00 - 3:30: The "Wow" Factor (Interactive Demo)
+**Speaker**:
+"This is our core innovation: **AI-Generated Career Simulations**."
+
+**Action**:
+1.  **Click 'Try Career Demo'**: Navigate to `/demo/doctor`.
+2.  **Start a Scenario**: interactive scenario (e.g., "Emergency Room Diagnosis").
+3.  **Interact**:
+    *   Read the AI-narrated situation.
+    *   Make a choice (pick an option).
+    *   **Highlight**: "The AI responds dynamically to my choices, teaching me critical thinking and empathy in real-time."
+4.  **Completion**: Show the feedback screen. "The AI analyzes my performance and tells me if this career suits my personality."
+
+## ⏱️ Minute 3:30 - 4:30: Intelligent AI Chat (Gemini Integration)
+**Speaker**:
+"What if I have specific questions? We built a context-aware AI tutor powered by Gemini."
+
+**Action**:
+1.  **Click 'Ask AI'**: Open `/chat`.
+2.  **Type prompt**: "I liked the doctor demo, but is it hard to study for?"
+3.  **Showcase**:
+    *   The AI answers with specific context.
+    *   **Intelligent Routing**: Ask "What about software engineering?"
+    *   **Highlight the Link**: Point out the **Green** smart link: `[Try Software Engineer Demo]`.
+    *   **Say**: "The AI routes users specifically to our interactive modules when relevant."
+
+## ⏱️ Minute 4:30 - 5:00: Practical Steps & Closing
+**Speaker**:
+"Once a student is convinced, we help them plan."
+
+**Action**:
+1.  **Switch to 'Exams' Tab**: On `/explore`, toggle to "Exams".
+2.  **Click 'NEET'**: Show the Exam Detail page (Dates, Pattern, Strategy videos).
+3.  **Closing Statement**:
+    "We built a complete loop: **Explore** → **Experience** (via Demos) → **Clarify** (via AI) → **Execute** (via Exams). This is the future of career guidance."
+
+---
+
+## 💡 Key Technical Points to Mention (If Judges Ask)
+*   **Tech Stack**: Next.js, Tailwind CSS, MongoDB, Google Gemini AI.
+*   **AI Integration**: We use Gemini not just for chat, but to generate the dynamic scenarios and evaluate user skills.
+*   **Scalability**: The system is designed to add new careers easily via the database seed scripts.
+
+## 🚀 Pro Tips for the Demo
+*   **Pre-load pages**: Have the tabs open if the internet is slow, but clicking through is more authentic.
+*   **Zoom in**: Keep browser zoom at 110% or 125% for visibility on projector.
+*   **Clear Chat**: Clear the chat history before starting so it looks fresh.
