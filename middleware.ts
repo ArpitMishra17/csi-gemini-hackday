@@ -7,21 +7,23 @@ export function middleware(request: NextRequest) {
 
     const protectedRoutes = ["/onboarding", "/demo", "/chat", "/dashboard"];
     const authRoutes = ["/login", "/signup"];
+    const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
-    // Check if trying to access a protected route
-    // We explicitly check for "/" to protect the home page, and other specific protected paths
-    if (pathname === "/" || protectedRoutes.some((route) => pathname.startsWith(route))) {
-        if (!token) {
+    // If user is NOT logged in
+    if (!token) {
+        // Redirect to login for ANY restricted page (which is everything except authRoutes)
+        if (!isAuthRoute) {
             const loginUrl = new URL("/login", request.url);
             loginUrl.searchParams.set("from", pathname);
             return NextResponse.redirect(loginUrl);
         }
     }
 
-    // Check if trying to access auth pages while already logged in
-    if (authRoutes.some((route) => pathname.startsWith(route))) {
-        if (token) {
-            return NextResponse.redirect(new URL("/onboarding", request.url));
+    // If user IS logged in
+    if (token) {
+        // Redirect to home if accessing login/signup pages while authenticated
+        if (isAuthRoute) {
+            return NextResponse.redirect(new URL("/", request.url));
         }
     }
 
