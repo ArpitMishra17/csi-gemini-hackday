@@ -126,8 +126,8 @@ export function OnboardingWizard() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <Card className="w-full max-w-xl shadow-lg border-2 border-primary/10 bg-card/50 backdrop-blur-sm relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 py-8">
+      <Card className="w-full max-w-2xl shadow-lg border-2 border-primary/10 bg-card/50 backdrop-blur-sm relative overflow-visible">
         <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 ease-out" style={{ width: `${(step / 5) * 100}%` }} />
 
         <CardHeader>
@@ -147,12 +147,12 @@ export function OnboardingWizard() {
           </CardDescription>
         </CardHeader>
 
-        <CardContent>
-          <div className="space-y-4 min-h-[300px]">
+        <CardContent className="overflow-visible">
+          <div className="space-y-3 min-h-[240px]">
             {step === 1 && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
+              <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <Label htmlFor="age">Age</Label>
                     <Input
                       id="age"
@@ -162,7 +162,7 @@ export function OnboardingWizard() {
                       onChange={(e) => updateFields({ age: e.target.value })}
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <Label htmlFor="gender">Gender</Label>
                     <Select
                       value={formData.gender}
@@ -180,7 +180,7 @@ export function OnboardingWizard() {
                     </Select>
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <Label htmlFor="grade">Grade / College Year</Label>
                   <Select
                     value={formData.grade}
@@ -205,8 +205,8 @@ export function OnboardingWizard() {
             )}
 
             {step === 2 && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
-                <div className="space-y-2">
+              <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
+                <div className="space-y-1.5">
                   <Label htmlFor="skills">Current Skills</Label>
                   <Input
                     id="skills"
@@ -215,7 +215,7 @@ export function OnboardingWizard() {
                     onChange={(e) => updateFields({ skills: e.target.value })}
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <Label htmlFor="interests">Interests</Label>
                   <Input
                     id="interests"
@@ -224,12 +224,12 @@ export function OnboardingWizard() {
                     onChange={(e) => updateFields({ interests: e.target.value })}
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <Label htmlFor="aims">Aims / Goals</Label>
                   <Textarea
                     id="aims"
                     placeholder="What do you want to achieve?"
-                    className="min-h-[100px]"
+                    className="min-h-[80px] resize-none"
                     value={formData.aims}
                     onChange={(e) => updateFields({ aims: e.target.value })}
                   />
@@ -238,9 +238,9 @@ export function OnboardingWizard() {
             )}
 
             {step === 3 && (
-              <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
                 {PERSONALITY_QUESTIONS.map((q) => (
-                  <div key={q.id} className="space-y-3">
+                  <div key={q.id} className="space-y-2">
                     <Label className="text-base">{q.question}</Label>
                     <div className="grid grid-cols-2 gap-2">
                       {q.options.map((option) => (
@@ -260,9 +260,9 @@ export function OnboardingWizard() {
             )}
 
             {step === 4 && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
+              <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
                 <Label className="text-lg font-medium">Which situations would you like to learn about?</Label>
-                <div className="grid grid-cols-1 gap-3 mt-4">
+                <div className="grid grid-cols-1 gap-2.5 mt-3">
                   {["Studying and working in India", "Studying or working abroad", "Both", "Not thinking about this yet"].map((option) => (
                     <Button
                       key={option}
@@ -278,9 +278,9 @@ export function OnboardingWizard() {
             )}
 
             {step === 5 && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-500">
+              <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
                 <Label className="text-lg font-medium">How would you like to explore careers right now?</Label>
-                <div className="grid grid-cols-1 gap-3 mt-4">
+                <div className="grid grid-cols-1 gap-2.5 mt-3">
                   {["By trying things out", "By reading and watching", "By talking and asking questions", "I don’t know yet"].map((option) => {
                     const isSelected = formData.explorationPreference.includes(option)
                     return (
@@ -301,7 +301,7 @@ export function OnboardingWizard() {
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-between mt-6">
+        <CardFooter className="flex justify-between mt-4">
           <Button
             variant="ghost"
             onClick={prevStep}

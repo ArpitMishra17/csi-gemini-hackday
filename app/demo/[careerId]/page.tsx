@@ -136,17 +136,17 @@ export default function CareerDetailPage({ params }: { params: Promise<{ careerI
           </Card>
         )}
 
-        <h2 className="text-lg font-semibold mb-4">
+        <h2 className="text-lg font-semibold mb-4 ">
           Available Scenarios
         </h2>
         {scenarios.length === 0 ? (
-          <Card className="text-center bg-muted/50">
+          <Card className="text-center bg-muted/50 mb-4 gap-2">
             <CardContent className="p-8">
               <p className="text-muted-foreground">No scenarios available for this career yet.</p>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 mb-4">
             {scenarios.map((scenario) => (
               <ScenarioCard
                 key={scenario._id}

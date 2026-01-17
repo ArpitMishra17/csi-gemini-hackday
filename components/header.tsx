@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { LogOut, LayoutDashboard, MessageCircle, PlayCircle } from "lucide-react"
+import { LogOut, LayoutDashboard, MessageCircle, PlayCircle, BookOpen } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
@@ -27,9 +27,12 @@ export function Header() {
         <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container flex h-14 items-center px-4">
                 <div className="mr-4 flex">
-                    <Link href="/" className="mr-6 flex items-center space-x-2">
+                    <Link href="/" className="mr-6 flex items-center">
                         <span className="text-xl font-bold tracking-tight">
-                            Career Explorer
+                            Career
+                        </span>
+                        <span className="text-xl font-bold tracking-tight text-green-600">
+                            Wiki
                         </span>
                     </Link>
                 </div>
@@ -46,6 +49,12 @@ export function Header() {
                         <Button asChild variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
                             <Link href="/demo">
                                 <PlayCircle className="h-4 w-4" />
+                                <span className="hidden sm:inline">Demo</span>
+                            </Link>
+                        </Button>
+                        <Button asChild variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
+                            <Link href="/explore">
+                                <BookOpen className="h-4 w-4" />
                                 <span className="hidden sm:inline">Explore</span>
                             </Link>
                         </Button>

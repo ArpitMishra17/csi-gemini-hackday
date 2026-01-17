@@ -34,7 +34,7 @@ export default function ScenarioCard({ scenario, careerId }: ScenarioCardProps) 
   return (
     <Link href={`/demo/${careerId}/${scenario._id}`}>
       <Card className={`hover:ring-primary/50 hover:ring-2 transition-all cursor-pointer group ${isCompleted ? 'border-primary/30 bg-primary/5' : ''}`}>
-        <CardContent className="pt-5">
+        <CardContent className="pt-4 pb-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2">

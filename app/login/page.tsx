@@ -59,20 +59,20 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-muted/50 p-4">
             <Card className="w-full max-w-md">
-                <CardHeader className="space-y-1">
+                <CardHeader className="space-y-0.5">
                     <CardTitle className="text-2xl font-bold">Sign in</CardTitle>
                     <CardDescription>
                         Enter your credentials to access your account
                     </CardDescription>
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-3 gap-2">
                         {error && (
                             <div className="p-3 text-sm text-red-500 bg-red-100 rounded-md">
                                 {error}
                             </div>
                         )}
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
                             <Label htmlFor="email">Email</Label>
                             <Input
                                 id="email"
@@ -82,12 +82,12 @@ export default function LoginPage() {
                                 required
                             />
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5 ">
                             <Label htmlFor="password">Password</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>
                     </CardContent>
-                    <CardFooter className="flex flex-col gap-4">
+                    <CardFooter className="pt-4 flex flex-col gap-3">
                         <Button className="w-full" type="submit" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Sign In
