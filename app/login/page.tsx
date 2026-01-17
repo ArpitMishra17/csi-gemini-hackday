@@ -15,6 +15,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import { trackLogin } from "@/lib/activity";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -42,6 +43,9 @@ export default function LoginPage() {
             if (!res.ok) {
                 throw new Error(data.error || "Login failed");
             }
+
+            // Track login activity
+            trackLogin();
 
             router.push("/onboarding");
             router.refresh();

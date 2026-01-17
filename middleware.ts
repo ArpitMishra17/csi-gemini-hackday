@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
     const token = request.cookies.get("auth-token")?.value;
     const { pathname } = request.nextUrl;
 
-    // Define routes that are accessible without authentication
+    const protectedRoutes = ["/onboarding", "/demo", "/chat", "/dashboard"];
     const authRoutes = ["/login", "/signup"];
     const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 

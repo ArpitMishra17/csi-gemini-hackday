@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChatInterface, EvaluationResult } from '@/components/demo';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import { trackScenarioStart, trackScenarioComplete } from '@/lib/activity';
 
 interface Message {
   id: string;
@@ -81,6 +82,9 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
         setTotalStages(data.totalStages);
         setCurrentOptions(data.currentStage.options);
 
+        // Track scenario start
+        trackScenarioStart(scenarioId, careerId, data.scenario.title, data.career.name);
+
         setMessages([
           {
             id: 'intro',
@@ -131,6 +135,9 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
       if (data.completed) {
         setIsCompleted(true);
         setCurrentOptions([]);
+
+        // Track scenario completion
+        trackScenarioComplete(scenarioId, careerId, scenarioTitle, careerName);
 
         // Fetch evaluation
         const evalResponse = await fetch(`/api/scenarios/${scenarioId}/evaluate`, {
