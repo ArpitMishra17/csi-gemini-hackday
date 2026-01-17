@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, MessageCircle, PlayCircle, Stethoscope, Code, Scale, Newspaper } from "lucide-react";
+import { ArrowRight, MessageCircle, PlayCircle, Stethoscope, Code, Scale, Newspaper, BookOpen } from "lucide-react";
 
 export default function Home() {
   return (
@@ -25,6 +25,12 @@ export default function Home() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="gap-2">
+              <Link href="/explore">
+                <BookOpen className="w-4 h-4" />
+                Watch & Read
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="gap-2">
               <Link href="/chat">
                 <MessageCircle className="w-4 h-4" />
                 Chat with AI
@@ -36,53 +42,82 @@ export default function Home() {
 
       {/* Features Section */}
       <div className="max-w-5xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-6">
           {/* Career Demo Feature */}
-          <Card>
-            <CardContent className="p-8 space-y-4">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-6 space-y-4">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                 <PlayCircle className="w-6 h-6 text-primary" />
               </div>
               <h2 className="text-xl font-semibold">
-                Interactive Career Scenarios
+                Try Things Out
               </h2>
-              <p className="text-muted-foreground">
-                Step into the shoes of a doctor, software engineer, lawyer, or journalist.
-                Make real decisions and see how your choices reveal your strengths.
+              <p className="text-muted-foreground text-sm">
+                Step into real career scenarios. Make decisions and discover your strengths through interactive simulations.
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  4 career paths to explore
+                  AI-powered roleplay
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  Multiple scenarios per career
+                  Multiple scenarios
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  AI-powered narrative experience
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  Personalized skill evaluation
+                  Skill evaluation
                 </li>
               </ul>
+              <Button asChild className="w-full mt-2">
+                <Link href="/demo">Start Demo</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Watch & Read Feature */}
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-6 space-y-4">
+              <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center dark:bg-cyan-900/20">
+                <BookOpen className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+              </div>
+              <h2 className="text-xl font-semibold">
+                Watch & Read
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                Explore careers through curated videos and articles. Learn what professionals do daily.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
+                  Career insights
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
+                  Day-in-life guides
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
+                  Expert quotes
+                </li>
+              </ul>
+              <Button asChild variant="outline" className="w-full mt-2">
+                <Link href="/explore">Explore Careers</Link>
+              </Button>
             </CardContent>
           </Card>
 
           {/* Chatbot Feature */}
-          <Card>
-            <CardContent className="p-8 space-y-4">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-6 space-y-4">
               <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center dark:bg-purple-900/20">
                 <MessageCircle className="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
               <h2 className="text-xl font-semibold">
-                AI Career Assistant
+                Ask Questions
               </h2>
-              <p className="text-muted-foreground">
-                Get personalized career guidance from our AI assistant. Ask about education paths,
-                skills, job prospects, and more.
+              <p className="text-muted-foreground text-sm">
+                Get personalized guidance from our AI assistant about education, skills, and career paths.
               </p>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
@@ -91,17 +126,16 @@ export default function Home() {
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-                  India & international context
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-                  Grade-appropriate guidance
+                  India & global context
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-purple-600" />
                   Instant responses
                 </li>
               </ul>
+              <Button asChild variant="outline" className="w-full mt-2">
+                <Link href="/chat">Chat with AI</Link>
+              </Button>
             </CardContent>
           </Card>
         </div>
