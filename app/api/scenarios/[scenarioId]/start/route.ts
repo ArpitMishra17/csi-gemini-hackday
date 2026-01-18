@@ -3,12 +3,8 @@ import dbConnect from '@/lib/mongodb';
 import Scenario from '@/models/Scenario';
 import UserScenarioProgress from '@/models/UserScenarioProgress';
 import Career from '@/models/Career';
-import { generateScenarioNarration } from '@/lib/gemini';
+import { generateScenarioNarrationStream } from '@/lib/gemini';
 import { CAREER_SYSTEM_PROMPTS } from '@/lib/prompts';
-
-// Simple in-memory cache for initial scenario narrations
-// Key: scenarioId, Value: generated narration
-const narrationCache = new Map<string, string>();
 
 export async function POST(
   request: NextRequest,
@@ -79,30 +75,7 @@ export async function POST(
       });
     }
 
-    // Generate AI narration for the first stage
-    let narration: string;
-    
-    // Check cache first
-    if (narrationCache.has(scenarioId)) {
-      narration = narrationCache.get(scenarioId)!;
-    } else {
-      try {
-        const systemPrompt = CAREER_SYSTEM_PROMPTS[career.slug] || '';
-        narration = await generateScenarioNarration(
-          scenario.context + '\n\n' + systemPrompt,
-          firstStage.prompt,
-          []
-        );
-        // Cache the successful generation
-        narrationCache.set(scenarioId, narration);
-      } catch (error) {
-        console.error('Error generating narration:', error);
-        // Fallback to basic context if AI fails
-        narration = `${scenario.context}\n\n${firstStage.prompt}`;
-      }
-    }
-
-    return NextResponse.json({
+    const metadata = {
       progressId: progress._id,
       scenario: {
         _id: scenario._id,
@@ -115,7 +88,6 @@ export async function POST(
       },
       currentStage: {
         stageId: firstStage.stageId,
-        narration,
         options: firstStage.options.map((opt) => ({
           id: opt.id,
           text: opt.text,
@@ -123,6 +95,41 @@ export async function POST(
       },
       stageNumber: 1,
       totalStages: scenario.stages.length,
+    };
+
+    const systemPrompt = CAREER_SYSTEM_PROMPTS[career.slug] || '';
+    const narrationStream = await generateScenarioNarrationStream(
+      scenario.context + '\n\n' + systemPrompt,
+      firstStage.prompt,
+      []
+    );
+
+    // Combine metadata and narration into a single stream
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        // Send metadata first, followed by our delimiter
+        controller.enqueue(encoder.encode(JSON.stringify(metadata) + '\n--METADATA_END--\n'));
+
+        const reader = narrationStream.getReader();
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            controller.enqueue(value);
+          }
+        } finally {
+          reader.releaseLock();
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
+      },
     });
   } catch (error) {
     console.error('Error starting scenario:', error);

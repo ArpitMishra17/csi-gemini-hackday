@@ -73,7 +73,7 @@ Rules:
 - Mention relevant resources, certifications, or educational paths
 - Be culturally aware and consider the Indian education system when relevant
 
-Keep responses concise but informative (2-4 paragraphs max unless more detail is needed).`;
+Keep responses concise but informative (1-2 paragraphs max unless more detail is needed).`;
 
 export const SCENARIO_NARRATION_PROMPT = (context: string, careerType: string) => `
 ${CAREER_SYSTEM_PROMPTS[careerType] || ''}
@@ -86,5 +86,5 @@ Guidelines:
 - Create vivid, realistic situations
 - Make the student feel like they're actually in that role
 - Keep it engaging but professional
-- Length: 2-3 paragraphs
+- Length: MAX 1 concise paragraph (2-3 sentences)
 `;

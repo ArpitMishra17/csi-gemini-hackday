@@ -3,7 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import Scenario from '@/models/Scenario';
 import UserScenarioProgress from '@/models/UserScenarioProgress';
 import Career from '@/models/Career';
-import { generateScenarioNarration } from '@/lib/gemini';
+import { generateScenarioNarrationStream } from '@/lib/gemini';
 import { CAREER_SYSTEM_PROMPTS } from '@/lib/prompts';
 
 export async function POST(
@@ -118,40 +118,60 @@ export async function POST(
     progress.currentStageId = nextStage.stageId;
     await progress.save();
 
-    // Generate AI narration for the next stage
-    let narration: string;
-    try {
-      const systemPrompt = CAREER_SYSTEM_PROMPTS[career.slug] || '';
-      narration = await generateScenarioNarration(
-        scenario.context + '\n\n' + systemPrompt,
-        nextStage.prompt,
-        previousChoices
-      );
-    } catch (error) {
-      console.error('Error generating narration:', error);
-      narration = nextStage.prompt;
-    }
-
     // Calculate stage number
     const stageIndex = scenario.stages.findIndex(
       (s) => s.stageId === nextStage.stageId
     );
 
-    return NextResponse.json({
+    const metadata = {
       completed: false,
+      stageNumber: stageIndex + 1,
+      totalStages: scenario.stages.length,
       currentStage: {
         stageId: nextStage.stageId,
-        narration,
         options: nextStage.options.map((opt) => ({
           id: opt.id,
           text: opt.text,
         })),
       },
-      stageNumber: stageIndex + 1,
-      totalStages: scenario.stages.length,
       previousChoice: {
         text: selectedOption.text,
         skillsRevealed: selectedOption.skillsRevealed,
+      },
+    };
+
+    const systemPrompt = CAREER_SYSTEM_PROMPTS[career.slug] || '';
+    const narrationStream = await generateScenarioNarrationStream(
+      scenario.context + '\n\n' + systemPrompt,
+      nextStage.prompt,
+      previousChoices
+    );
+
+    // Combine metadata and narration into a single stream
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        // Send metadata first, followed by a double newline as a delimiter
+        controller.enqueue(encoder.encode(JSON.stringify(metadata) + '\n--METADATA_END--\n'));
+
+        const reader = narrationStream.getReader();
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            controller.enqueue(value);
+          }
+        } finally {
+          reader.releaseLock();
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
       },
     });
   } catch (error) {

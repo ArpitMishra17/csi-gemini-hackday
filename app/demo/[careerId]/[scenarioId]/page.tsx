@@ -14,12 +14,6 @@ interface Message {
   skillsRevealed?: string[];
 }
 
-interface StageData {
-  stageId: string;
-  narration: string;
-  options: { id: string; text: string }[];
-}
-
 interface EvaluationData {
   strengths: string[];
   areasToImprove: string[];
@@ -55,6 +49,90 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
     return userId;
   }, []);
 
+  const handleStream = useCallback(async (response: Response, isStart: boolean = false) => {
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error('Failed to get response reader');
+
+    const textDecoder = new TextDecoder();
+    let metadataReceived = false;
+    let fullContent = '';
+    const currentNarratorMessageId = `narrator-${Date.now()}`;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = textDecoder.decode(value, { stream: true });
+      
+      if (!metadataReceived) {
+        const parts = chunk.split('\n--METADATA_END--\n');
+        if (parts.length > 1) {
+          const metadata = JSON.parse(parts[0]);
+          metadataReceived = true;
+          
+          if (isStart) {
+            setScenarioTitle(metadata.scenario.title);
+            setCareerIcon(metadata.career.icon);
+            setCareerName(metadata.career.name);
+            setStageNumber(metadata.stageNumber);
+            setTotalStages(metadata.totalStages);
+            setCurrentOptions(metadata.currentStage.options);
+            
+            // Track scenario start
+            trackScenarioStart(scenarioId, careerId, metadata.scenario.title, metadata.career.name);
+          } else {
+            // Handle skills revealed
+            if (metadata.previousChoice?.skillsRevealed?.length > 0) {
+              setMessages((prev) => [
+                ...prev,
+                {
+                  id: `skills-${Date.now()}`,
+                  type: 'system',
+                  content: `Skills demonstrated: ${metadata.previousChoice.skillsRevealed.join(', ')}`,
+                  skillsRevealed: metadata.previousChoice.skillsRevealed,
+                },
+              ]);
+            }
+            setStageNumber(metadata.stageNumber);
+            setCurrentOptions(metadata.currentStage.options);
+          }
+
+          // Prepare for narrator message
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: currentNarratorMessageId,
+              type: 'narrator',
+              content: '',
+            },
+          ]);
+
+          // Process remaining chunk as content
+          const contentChunk = parts[1];
+          if (contentChunk) {
+            fullContent += contentChunk;
+            setMessages((prev) => 
+              prev.map(msg => 
+                msg.id === currentNarratorMessageId 
+                  ? { ...msg, content: fullContent } 
+                  : msg
+              )
+            );
+          }
+        }
+      } else {
+        fullContent += chunk;
+        setMessages((prev) => 
+          prev.map(msg => 
+            msg.id === currentNarratorMessageId 
+              ? { ...msg, content: fullContent } 
+              : msg
+          )
+        );
+      }
+    }
+  }, [careerId, scenarioId]);
+
   // Start the scenario
   useEffect(() => {
     async function startScenario() {
@@ -73,25 +151,7 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
 
         if (!response.ok) throw new Error('Failed to start scenario');
 
-        const data = await response.json();
-
-        setScenarioTitle(data.scenario.title);
-        setCareerIcon(data.career.icon);
-        setCareerName(data.career.name);
-        setStageNumber(data.stageNumber);
-        setTotalStages(data.totalStages);
-        setCurrentOptions(data.currentStage.options);
-
-        // Track scenario start
-        trackScenarioStart(scenarioId, careerId, data.scenario.title, data.career.name);
-
-        setMessages([
-          {
-            id: 'intro',
-            type: 'narrator',
-            content: data.currentStage.narration,
-          },
-        ]);
+        await handleStream(response, true);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -102,7 +162,7 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
     if (scenarioId) {
       startScenario();
     }
-  }, [scenarioId, getUserId]);
+  }, [scenarioId, getUserId, handleStream]);
 
   // Handle option selection
   const handleSelectOption = async (optionId: string) => {
@@ -130,54 +190,35 @@ export default function ScenarioPlayerPage({ params }: { params: Promise<{ caree
 
       if (!response.ok) throw new Error('Failed to submit response');
 
-      const data = await response.json();
+      // Check if it's a JSON response (completed) or a stream
+      const contentType = response.headers.get('Content-Type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        if (data.completed) {
+          setIsCompleted(true);
+          setCurrentOptions([]);
 
-      if (data.completed) {
-        setIsCompleted(true);
-        setCurrentOptions([]);
+          // Track scenario completion
+          trackScenarioComplete(scenarioId, careerId, scenarioTitle, careerName);
 
-        // Track scenario completion
-        trackScenarioComplete(scenarioId, careerId, scenarioTitle, careerName);
+          // Fetch evaluation
+          const evalResponse = await fetch(`/api/scenarios/${scenarioId}/evaluate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
+          });
 
-        // Fetch evaluation
-        const evalResponse = await fetch(`/api/scenarios/${scenarioId}/evaluate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId }),
-        });
-
-        if (evalResponse.ok) {
-          const evalData = await evalResponse.json();
-          setEvaluation(evalData.evaluation);
-          setChoicesSummary(evalData.choicesSummary);
+          if (evalResponse.ok) {
+            const evalData = await evalResponse.json();
+            setEvaluation(evalData.evaluation);
+            setChoicesSummary(evalData.choicesSummary);
+          }
+          setIsLoading(false);
+          return;
         }
-      } else {
-        // Add skills revealed message if any
-        if (data.previousChoice?.skillsRevealed?.length > 0) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: `skills-${Date.now()}`,
-              type: 'system',
-              content: `Skills demonstrated: ${data.previousChoice.skillsRevealed.join(', ')}`,
-              skillsRevealed: data.previousChoice.skillsRevealed,
-            },
-          ]);
-        }
-
-        // Add narrator message
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `narrator-${Date.now()}`,
-            type: 'narrator',
-            content: data.currentStage.narration,
-          },
-        ]);
-
-        setStageNumber(data.stageNumber);
-        setCurrentOptions(data.currentStage.options);
       }
+
+      await handleStream(response, false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

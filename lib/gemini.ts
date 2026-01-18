@@ -98,7 +98,7 @@ ${previousChoices.length > 0 ? previousChoices.join('\n') : 'This is the beginni
 
 Current stage: ${stagePrompt}
 
-Generate an immersive, engaging narrative (2-3 paragraphs) that:
+Generate an immersive, engaging narrative (MAX 1 concise paragraph, 2-3 sentences) that:
 1. Sets the scene vividly
 2. Presents the situation the user must respond to
 3. Maintains professional realism
@@ -108,6 +108,50 @@ Do not include the options - just narrate the situation.`;
 
   const result = await model.generateContent(prompt);
   return result.response.text();
+}
+
+export async function generateScenarioNarrationStream(
+  context: string,
+  stagePrompt: string,
+  previousChoices: string[]
+): Promise<ReadableStream<Uint8Array>> {
+  const model = getGeminiModel();
+
+  const prompt = `You are narrating an interactive career simulation scenario.
+
+Context: ${context}
+
+Previous choices made by the user:
+${previousChoices.length > 0 ? previousChoices.join('\n') : 'This is the beginning of the scenario.'}
+
+Current stage: ${stagePrompt}
+
+Generate an immersive, engaging narrative (MAX 1 concise paragraph, 2-3 sentences) that:
+1. Sets the scene vividly
+2. Presents the situation the user must respond to
+3. Maintains professional realism
+4. Is appropriate for high school and college students
+
+Do not include the options - just narrate the situation.`;
+
+  const result = await model.generateContentStream(prompt);
+
+  return new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder();
+      try {
+        for await (const chunk of result.stream) {
+          const chunkText = chunk.text();
+          if (chunkText) {
+            controller.enqueue(encoder.encode(chunkText));
+          }
+        }
+        controller.close();
+      } catch (error) {
+        controller.error(error);
+      }
+    },
+  });
 }
 
 export async function generateEvaluation(
