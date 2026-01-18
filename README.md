@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CareerWiki
 
-## Getting Started
+![Project Image Placeholder](./public/homepage.png)
 
-First, run the development server:
+> **[Live Demo URL](https://csi-gemini-hackday.vercel.app/)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+CareerWiki is an AI-powered interactive platform designed to help students and professionals explore career paths through immersive simulations, personalized guidance, and dynamic activity tracking. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Built as a hackathon project for **CSI Gemini Hackdays**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Interactive Career Simulations:** Step into the shoes of a Doctor, Software Engineer, Lawyer, and more. Experience real-world scenarios with real-time AI-streamed narration and feedback.
+- **AI Career Consultant:** A personalized chatbot trained to provide actionable advice on education, skills, and career growth tailored to your profile.
+- **Dynamic Dashboard:** Track your progress, maintain activity streaks, and get personalized career recommendations based on your interests.
+- **Personalized Onboarding:** A smart onboarding wizard that understands your background and goals to curate your experience.
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework:** Next.js 16 (App Router)
+- **AI Engine:** Google Gemini API (2.5 / 3 Flash)
+- **Database:** MongoDB with Mongoose
+- **Styling:** Tailwind CSS & shadcn/ui
+- **Authentication:** JWT-based secure authentication
+- **UI Components:** Radix UI primitives
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Contributors:** Arpit Mishra, Ayan Mani Tripathi, Manik Prakash
